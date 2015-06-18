@@ -1,5 +1,6 @@
 import smbus
 import struct
+import time
 
 class AStar:
   def __init__(self):
@@ -7,9 +8,10 @@ class AStar:
 
   def set_motors(self, left, right):
     self.bus.write_i2c_block_data(20, 1, [2] + [ord(c) for c in list(struct.pack('hh', left, right))])
-    self.wait_for_return
+    self.wait_for_return()
 
   def wait_for_return(self):
-    while 0 == self.bus.read_byte(20):
-      pass
-
+    while True:
+      self.bus.write_byte(20, 0)
+      if 0 != self.bus.read_byte(20):
+        break
