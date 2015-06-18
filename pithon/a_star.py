@@ -1,6 +1,5 @@
 import smbus
 import struct
-import time
 
 class AStar:
   def __init__(self):
